@@ -71,7 +71,7 @@ struct Alert {
     }
 
     if (!sm.updated("controlsState") && (sm.frame - started_frame) > 5 * UI_FREQ) {
-      const int CONTROLS_TIMEOUT = 5;
+      const int CONTROLS_TIMEOUT = 50;
       const int controls_missing = (nanos_since_boot() - sm.rcv_time("controlsState")) / 1e9;
 
       // Handle controls timeout
@@ -83,7 +83,7 @@ struct Alert {
                  AudibleAlert::NONE};
       } else if (controls_missing > CONTROLS_TIMEOUT && !Hardware::PC()) {
         // car is started, but controls is lagging or died
-        if (cs.getEnabled() && (controls_missing - CONTROLS_TIMEOUT) < 10) {
+        if (cs.getEnabled() && (controls_missing - CONTROLS_TIMEOUT) < 50) {
           alert = {"TAKE CONTROL IMMEDIATELY", "Controls Unresponsive",
                    "controlsUnresponsive", cereal::ControlsState::AlertSize::FULL,
                    cereal::ControlsState::AlertStatus::CRITICAL,
