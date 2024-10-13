@@ -20,7 +20,7 @@ SAMPLE_RATE = 48000
 SAMPLE_BUFFER = 4096 # (approx 100ms)
 MAX_VOLUME = 1.0
 MIN_VOLUME = 0.1
-CONTROLS_TIMEOUT = 5 # 5 seconds
+CONTROLS_TIMEOUT = 15 # 5 seconds
 FILTER_DT = 1. / (micd.SAMPLE_RATE / micd.FFT_SAMPLES)
 
 AMBIENT_DB = 30 # DB where MIN_VOLUME is applied
@@ -47,7 +47,7 @@ def check_controls_timeout_alert(sm):
   controls_missing = time.monotonic() - sm.rcv_time['controlsState']
 
   if controls_missing > CONTROLS_TIMEOUT:
-    if sm['controlsState'].enabled and (controls_missing - CONTROLS_TIMEOUT) < 10:
+    if sm['controlsState'].enabled and (controls_missing - CONTROLS_TIMEOUT) < 50:
       return True
 
   return False
